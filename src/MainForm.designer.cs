@@ -23,6 +23,7 @@ namespace DevPad
             SuspendLayout();
 
             richTextBox.Dock = DockStyle.Fill;
+            richTextBox.Font = new Font("Consolas", 10, FontStyle.Regular, GraphicsUnit.Point, 0);
 
             menuStrip.Items.Add(saveToolStripMenuItem);
             menuStrip.Items.Add(openToolStripMenuItem);
