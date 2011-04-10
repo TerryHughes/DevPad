@@ -7,13 +7,25 @@ namespace DevPad
 
     internal partial class MainForm : Form
     {
+        private readonly UnsavedChanges unsavedChanges;
         private string fileName;
 
         internal MainForm()
         {
             InitializeComponents();
 
+            unsavedChanges = new UnsavedChanges(this, Save);
             fileName = String.Empty;
+
+            FormClosing += (s, e) =>
+            {
+                if (unsavedChanges.WereNotHandled())
+                {
+                    e.Cancel = true;
+                }
+            };
+
+            richTextBox.TextChanged += (s, e) => unsavedChanges.HaveOccurred();
 
             saveToolStripMenuItem.Click += (s, e) => Save();
             openToolStripMenuItem.Click += (s, e) => Open();
@@ -28,21 +40,32 @@ namespace DevPad
             }
 
             File.WriteAllText(fileName, richTextBox.Text.Replace("\n", Environment.NewLine), Encoding.Default);
+
+            unsavedChanges.Reset();
         }
 
         private void Open()
         {
-            if (DialogCancelled(new OpenFileDialog()))
+            if (unsavedChanges.WereNotHandled() || DialogCancelled(new OpenFileDialog()))
             {
                 return;
             }
 
             richTextBox.Text = File.ReadAllText(fileName, Encoding.Default);
+
+            unsavedChanges.Reset();
         }
 
         private void New()
         {
+            if (unsavedChanges.WereNotHandled())
+            {
+                return;
+            }
+
             fileName = richTextBox.Text = String.Empty;
+
+            unsavedChanges.Reset();
         }
 
         private bool DialogCancelled(FileDialog dialog)
