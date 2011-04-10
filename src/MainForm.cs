@@ -7,9 +7,13 @@ namespace DevPad
 
     internal partial class MainForm : Form
     {
+        private string fileName;
+
         internal MainForm()
         {
             InitializeComponents();
+
+            fileName = String.Empty;
 
             saveToolStripMenuItem.Click += (s, e) => Save();
             openToolStripMenuItem.Click += (s, e) => Open();
@@ -18,31 +22,39 @@ namespace DevPad
 
         private void Save()
         {
-            var dialog = new SaveFileDialog();
-
-            if (dialog.ShowDialog() != DialogResult.OK)
+            if ((fileName == String.Empty) && DialogCancelled(new SaveFileDialog()))
             {
                 return;
             }
 
-            File.WriteAllText(dialog.FileName, richTextBox.Text.Replace("\n", Environment.NewLine), Encoding.Default);
+            File.WriteAllText(fileName, richTextBox.Text.Replace("\n", Environment.NewLine), Encoding.Default);
         }
 
         private void Open()
         {
-            var dialog = new OpenFileDialog();
-
-            if (dialog.ShowDialog() != DialogResult.OK)
+            if (DialogCancelled(new OpenFileDialog()))
             {
                 return;
             }
 
-            richTextBox.Text = File.ReadAllText(dialog.FileName, Encoding.Default);
+            richTextBox.Text = File.ReadAllText(fileName, Encoding.Default);
         }
 
         private void New()
         {
-            richTextBox.Text = String.Empty;
+            fileName = richTextBox.Text = String.Empty;
+        }
+
+        private bool DialogCancelled(FileDialog dialog)
+        {
+            if (dialog.ShowDialog() != DialogResult.OK)
+            {
+                return true;
+            }
+
+            fileName = dialog.FileName;
+
+            return false;
         }
     }
 }
