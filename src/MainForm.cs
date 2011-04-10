@@ -2,7 +2,11 @@ namespace DevPad
 {
     using System.Windows.Forms;
 
-    internal class MainForm : Form
+    internal partial class MainForm : Form
     {
+        internal MainForm()
+        {
+            InitializeComponents();
+        }
     }
 }
