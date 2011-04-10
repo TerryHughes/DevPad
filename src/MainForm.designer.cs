@@ -34,6 +34,8 @@ namespace DevPad
             Controls.Add(richTextBox);
             Controls.Add(menuStrip);
 
+            Text = "DevPad";
+
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
 

@@ -64,6 +64,7 @@ namespace DevPad
             }
 
             fileName = richTextBox.Text = String.Empty;
+            Text = "DevPad";
 
             unsavedChanges.Reset();
         }
@@ -76,6 +77,7 @@ namespace DevPad
             }
 
             fileName = dialog.FileName;
+            Text = "DevPad - " + fileName;
 
             return false;
         }
