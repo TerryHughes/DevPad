@@ -1,5 +1,6 @@
 namespace DevPad
 {
+    using System.Drawing;
     using System.Windows.Forms;
 
     partial class MainForm
@@ -34,7 +35,9 @@ namespace DevPad
             Controls.Add(richTextBox);
             Controls.Add(menuStrip);
 
+            Size = new Size(800, 600);
             Text = "DevPad";
+            WindowState = FormWindowState.Maximized;
 
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
