@@ -22,6 +22,7 @@ namespace DevPad
             menuStrip.SuspendLayout();
             SuspendLayout();
 
+            richTextBox.AcceptsTab = true;
             richTextBox.Dock = DockStyle.Fill;
             richTextBox.Font = new Font("Consolas", 10, FontStyle.Regular, GraphicsUnit.Point, 0);
 

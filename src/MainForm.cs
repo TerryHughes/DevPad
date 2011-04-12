@@ -26,6 +26,14 @@ namespace DevPad
             };
 
             richTextBox.TextChanged += (s, e) => unsavedChanges.HaveOccurred();
+            richTextBox.KeyPress += (s, e) =>
+            {
+                if ((Keys)e.KeyChar == Keys.Tab)
+                {
+                    InsertSpacesForTab();
+                    e.Handled = true;
+                }
+            };
 
             saveToolStripMenuItem.Click += (s, e) => Save();
             openToolStripMenuItem.Click += (s, e) => Open();
@@ -80,6 +88,11 @@ namespace DevPad
             Text = "DevPad - " + fileName;
 
             return false;
+        }
+
+        private void InsertSpacesForTab()
+        {
+            richTextBox.SelectedText = "    ";
         }
     }
 }
