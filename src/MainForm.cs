@@ -2,6 +2,7 @@ namespace DevPad
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Windows.Forms;
 
@@ -92,7 +93,14 @@ namespace DevPad
 
         private void InsertSpacesForTab()
         {
-            richTextBox.SelectedText = "    ";
+            var startOfLine = richTextBox.GetFirstCharIndexOfCurrentLine();
+            var caret = richTextBox.SelectionStart;
+
+            const int spacesPerTabStop = 4;
+            var charactersPastPreviousTabStop = (caret - startOfLine) % spacesPerTabStop;
+            var spacesToNextTabStop = new String(Enumerable.Range(0, spacesPerTabStop - charactersPastPreviousTabStop).Select(i => ' ').ToArray());
+
+            richTextBox.SelectedText = spacesToNextTabStop;
         }
     }
 }
