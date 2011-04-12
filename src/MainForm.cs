@@ -34,6 +34,12 @@ namespace DevPad
                     InsertSpacesForTab();
                     e.Handled = true;
                 }
+
+                if ((Keys)e.KeyChar == Keys.Enter)
+                {
+                    IndentNewLine();
+                    e.Handled = true;
+                }
             };
 
             saveToolStripMenuItem.Click += (s, e) => Save();
@@ -101,6 +107,16 @@ namespace DevPad
             var spacesToNextTabStop = new String(Enumerable.Range(0, spacesPerTabStop - charactersPastPreviousTabStop).Select(i => ' ').ToArray());
 
             richTextBox.SelectedText = spacesToNextTabStop;
+        }
+
+        private void IndentNewLine()
+        {
+            var lineNumberOfPreviousLine = richTextBox.GetLineFromCharIndex(richTextBox.GetFirstCharIndexOfCurrentLine()) - 1;
+            var previousLineText = richTextBox.Lines[lineNumberOfPreviousLine];
+
+            var leadingSpaces = new String(previousLineText.TakeWhile(c => c == ' ').ToArray());
+
+            richTextBox.SelectedText = leadingSpaces;
         }
     }
 }
