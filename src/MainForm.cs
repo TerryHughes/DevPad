@@ -116,6 +116,17 @@ namespace DevPad
 
             var leadingSpaces = new String(previousLineText.TakeWhile(c => c == ' ').ToArray());
 
+            if (previousLineText == leadingSpaces)
+            {
+                var caret = richTextBox.SelectionStart;
+
+                richTextBox.SelectionStart = richTextBox.GetFirstCharIndexFromLine(lineNumberOfPreviousLine);
+                richTextBox.SelectionLength = previousLineText.Length;
+                richTextBox.SelectedText = String.Empty;
+
+                richTextBox.SelectionStart = caret - previousLineText.Length;
+            }
+
             richTextBox.SelectedText = leadingSpaces;
         }
     }
