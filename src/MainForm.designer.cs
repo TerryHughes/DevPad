@@ -14,10 +14,10 @@ namespace DevPad
         private void InitializeComponents()
         {
             richTextBox = new RichTextBox();
-            menuStrip = new MenuStrip();
-            saveToolStripMenuItem = new ToolStripMenuItem();
-            openToolStripMenuItem = new ToolStripMenuItem();
-            newToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip = new MenuStrip { Visible = false };
+            saveToolStripMenuItem = new ToolStripMenuItem { Visible = false };
+            openToolStripMenuItem = new ToolStripMenuItem { Visible = false };
+            newToolStripMenuItem = new ToolStripMenuItem { Visible = false };
 
             menuStrip.SuspendLayout();
             SuspendLayout();
@@ -30,9 +30,9 @@ namespace DevPad
             menuStrip.Items.Add(openToolStripMenuItem);
             menuStrip.Items.Add(newToolStripMenuItem);
 
-            saveToolStripMenuItem.Text = "&Save";
-            openToolStripMenuItem.Text = "&Open";
-            newToolStripMenuItem.Text = "&New";
+            saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
+            openToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
+            newToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.N;
 
             Controls.Add(richTextBox);
             Controls.Add(menuStrip);
