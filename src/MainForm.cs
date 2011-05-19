@@ -47,6 +47,16 @@ namespace DevPad
             newToolStripMenuItem.Click += (s, e) => New();
         }
 
+        internal MainForm(string fileName) : this()
+        {
+            this.fileName = fileName;
+            Text = "DevPad - " + fileName;
+
+            richTextBox.Text = File.ReadAllText(fileName, Encoding.Default);
+
+            unsavedChanges.Reset();
+        }
+
         private void Save()
         {
             if ((fileName == String.Empty) && DialogCancelled(new SaveFileDialog()))

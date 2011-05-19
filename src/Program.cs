@@ -6,9 +6,16 @@ namespace DevPad
     internal static class Program
     {
         [STAThread]
-        private static void Main()
+        private static void Main(string[] args)
         {
-            Application.Run(new MainForm());
+            if (args.Length > 0)
+            {
+                Application.Run(new MainForm(args[0]));
+            }
+            else
+            {
+                Application.Run(new MainForm());
+            }
         }
     }
 }
