@@ -5,13 +5,13 @@ namespace DevPad
 
     partial class MainForm
     {
-        private RichTextBox richTextBox;
-        private MenuStrip menuStrip;
-        private ToolStripMenuItem saveToolStripMenuItem;
-        private ToolStripMenuItem openToolStripMenuItem;
-        private ToolStripMenuItem newToolStripMenuItem;
+        RichTextBox richTextBox;
+        MenuStrip menuStrip;
+        ToolStripMenuItem saveToolStripMenuItem;
+        ToolStripMenuItem openToolStripMenuItem;
+        ToolStripMenuItem newToolStripMenuItem;
 
-        private void InitializeComponents()
+        void InitializeComponents()
         {
             richTextBox = new RichTextBox();
             menuStrip = new MenuStrip { Visible = false };

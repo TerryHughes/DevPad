@@ -6,10 +6,10 @@ namespace DevPad
     using System.Text;
     using System.Windows.Forms;
 
-    internal partial class MainForm : Form
+    partial class MainForm : Form
     {
-        private readonly UnsavedChanges unsavedChanges;
-        private string fileName;
+        readonly UnsavedChanges unsavedChanges;
+        string fileName;
 
         internal MainForm()
         {
@@ -57,7 +57,7 @@ namespace DevPad
             unsavedChanges.Reset();
         }
 
-        private void Save()
+        void Save()
         {
             if ((fileName == String.Empty) && DialogCancelled(new SaveFileDialog()))
             {
@@ -69,7 +69,7 @@ namespace DevPad
             unsavedChanges.Reset();
         }
 
-        private void Open()
+        void Open()
         {
             if (unsavedChanges.WereNotHandled() || DialogCancelled(new OpenFileDialog()))
             {
@@ -81,7 +81,7 @@ namespace DevPad
             unsavedChanges.Reset();
         }
 
-        private void New()
+        void New()
         {
             if (unsavedChanges.WereNotHandled())
             {
@@ -94,7 +94,7 @@ namespace DevPad
             unsavedChanges.Reset();
         }
 
-        private bool DialogCancelled(FileDialog dialog)
+        bool DialogCancelled(FileDialog dialog)
         {
             if (dialog.ShowDialog() != DialogResult.OK)
             {
@@ -107,7 +107,7 @@ namespace DevPad
             return false;
         }
 
-        private void InsertSpacesForTab()
+        void InsertSpacesForTab()
         {
             var startOfLine = richTextBox.GetFirstCharIndexOfCurrentLine();
             var caret = richTextBox.SelectionStart;
@@ -119,7 +119,7 @@ namespace DevPad
             richTextBox.SelectedText = spacesToNextTabStop;
         }
 
-        private void IndentNewLine()
+        void IndentNewLine()
         {
             var lineNumberOfPreviousLine = richTextBox.GetLineFromCharIndex(richTextBox.GetFirstCharIndexOfCurrentLine()) - 1;
             var previousLineText = richTextBox.Lines[lineNumberOfPreviousLine];

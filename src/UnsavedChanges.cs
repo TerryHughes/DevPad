@@ -3,13 +3,13 @@ namespace DevPad
     using System;
     using System.Windows.Forms;
 
-    internal class UnsavedChanges
+    class UnsavedChanges
     {
-        private readonly IWin32Window window;
-        private readonly Action action;
-        private bool unsavedChangesHaveOccurred;
+        readonly IWin32Window window;
+        readonly Action action;
+        bool unsavedChangesHaveOccurred;
 
-        private bool UnsavedChangesHaveNotOccurred
+        bool UnsavedChangesHaveNotOccurred
         {
             get { return !unsavedChangesHaveOccurred; }
         }
@@ -35,7 +35,7 @@ namespace DevPad
             return !UnsavedChangesWereHandled();
         }
 
-        private bool UnsavedChangesWereHandled()
+        bool UnsavedChangesWereHandled()
         {
             if (UnsavedChangesHaveNotOccurred)
             {

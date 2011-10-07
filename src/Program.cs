@@ -3,10 +3,10 @@ namespace DevPad
     using System;
     using System.Windows.Forms;
 
-    internal static class Program
+    static class Program
     {
         [STAThread]
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             if (args.Length > 0)
             {
