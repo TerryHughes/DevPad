@@ -9,15 +9,15 @@ namespace DevPad
         readonly Action action;
         bool unsavedChangesHaveOccurred;
 
-        bool UnsavedChangesHaveNotOccurred
-        {
-            get { return !unsavedChangesHaveOccurred; }
-        }
-
         internal UnsavedChanges(IWin32Window window, Action action)
         {
             this.window = window;
             this.action = action;
+        }
+
+        bool UnsavedChangesHaveNotOccurred
+        {
+            get { return !unsavedChangesHaveOccurred; }
         }
 
         internal void HaveOccurred()
