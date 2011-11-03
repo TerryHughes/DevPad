@@ -26,7 +26,17 @@ namespace DevPad
                 }
             };
 
-            richTextBox.TextChanged += (s, e) => unsavedChanges.HaveOccurred();
+            richTextBox.TextChanged += (s, e) =>
+            {
+                var indicator = " *";
+
+                if ((fileName != String.Empty) && !Text.EndsWith(fileName + indicator))
+                {
+                    Text += indicator;
+                }
+
+                unsavedChanges.HaveOccurred();
+            };
             richTextBox.KeyPress += (s, e) =>
             {
                 if ((Keys)e.KeyChar == Keys.Tab)
@@ -67,6 +77,8 @@ namespace DevPad
             File.WriteAllText(fileName, richTextBox.Text.Replace("\n", Environment.NewLine), Encoding.Default);
 
             unsavedChanges.Reset();
+
+            Text = "DevPad - " + fileName;
         }
 
         void Open()
@@ -79,6 +91,8 @@ namespace DevPad
             richTextBox.Text = File.ReadAllText(fileName, Encoding.Default);
 
             unsavedChanges.Reset();
+
+            Text = "DevPad - " + fileName;
         }
 
         void New()
