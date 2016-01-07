@@ -26,12 +26,16 @@ namespace DevPad
             if (fileNames.Length == 1 && Directory.Exists(fileNames[0]))
             {
                 var currentDirectory = fileNames[0];
-                var binDirectory = Path.Combine(currentDirectory, "bin");
-                var objDirectory = Path.Combine(currentDirectory, "obj");
+                var skipDirectories = new[]
+                {
+                    Path.Combine(currentDirectory, ".git"),
+                    Path.Combine(currentDirectory, "bin"),
+                    Path.Combine(currentDirectory, "obj"),
+                };
                 var oneHourAgoUtc = DateTime.UtcNow.AddHours(-1);
 
                 fileNames = Directory.EnumerateFiles(currentDirectory, "*", SearchOption.AllDirectories)
-                                     .Where(f => !f.StartsWith(binDirectory) && !f.StartsWith(objDirectory))
+                                     .Where(f => skipDirectories.All(d => !f.StartsWith(d)))
                                      .Where(f => new FileInfo(f).LastWriteTimeUtc > oneHourAgoUtc)
                                      .ToArray()
                     ;
