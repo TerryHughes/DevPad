@@ -8,150 +8,66 @@ namespace DevPad
 
     partial class MainForm : Form
     {
-        readonly UnsavedChanges unsavedChanges;
-        string fileName;
-
         internal MainForm()
         {
             InitializeComponents();
 
-            unsavedChanges = new UnsavedChanges(this, Save);
-            fileName = String.Empty;
+            IsMdiContainer = true;
 
-            FormClosing += (s, e) =>
-            {
-                if (unsavedChanges.WereNotHandled())
-                {
-                    e.Cancel = true;
-                }
-            };
-
-            richTextBox.TextChanged += (s, e) =>
-            {
-                var indicator = " *";
-
-                if ((fileName != String.Empty) && !Text.EndsWith(fileName + indicator))
-                {
-                    Text += indicator;
-                }
-
-                unsavedChanges.HaveOccurred();
-            };
-            richTextBox.KeyPress += (s, e) =>
-            {
-                if ((Keys)e.KeyChar == Keys.Tab)
-                {
-                    InsertSpacesForTab();
-                    e.Handled = true;
-                }
-
-                if ((Keys)e.KeyChar == Keys.Enter)
-                {
-                    IndentNewLine();
-                    e.Handled = true;
-                }
-            };
-
-            saveToolStripMenuItem.Click += (s, e) => Save();
-            openToolStripMenuItem.Click += (s, e) => Open();
             newToolStripMenuItem.Click += (s, e) => New();
+            openToolStripMenuItem.Click += (s, e) => Open();
+            closeToolStripMenuItem.Click += (s, e) => CloseForm();
+            saveToolStripMenuItem.Click += (s, e) => Save();
+            exitToolStripMenuItem.Click += (s, e) => Exit();
         }
 
-        internal MainForm(string fileName) : this()
+        internal MainForm(string[] fileNames) : this()
         {
-            this.fileName = fileName;
-            Text = "DevPad - " + fileName;
-
-            richTextBox.Text = File.ReadAllText(fileName, Encoding.Default);
-
-            unsavedChanges.Reset();
-        }
-
-        void Save()
-        {
-            if ((fileName == String.Empty) && DialogCancelled(new SaveFileDialog()))
+            foreach (var fileName in fileNames)
             {
-                return;
+                var form = new DocumentForm(fileName);
+                form.MdiParent = this;
+                form.Show();
             }
-
-            File.WriteAllText(fileName, richTextBox.Text.Replace("\n", Environment.NewLine), Encoding.Default);
-
-            unsavedChanges.Reset();
-
-            Text = "DevPad - " + fileName;
-        }
-
-        void Open()
-        {
-            if (unsavedChanges.WereNotHandled() || DialogCancelled(new OpenFileDialog()))
-            {
-                return;
-            }
-
-            richTextBox.Text = File.ReadAllText(fileName, Encoding.Default);
-
-            unsavedChanges.Reset();
-
-            Text = "DevPad - " + fileName;
         }
 
         void New()
         {
-            if (unsavedChanges.WereNotHandled())
+            var form = new DocumentForm();
+            form.MdiParent = this;
+            form.Show();
+        }
+
+        void Open()
+        {
+            var dialog = new OpenFileDialog() { Multiselect = true };
+
+            if (dialog.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
 
-            fileName = richTextBox.Text = String.Empty;
-            Text = "DevPad";
-
-            unsavedChanges.Reset();
-        }
-
-        bool DialogCancelled(FileDialog dialog)
-        {
-            if (dialog.ShowDialog() != DialogResult.OK)
+            foreach (var fileName in dialog.FileNames)
             {
-                return true;
+                var form = new DocumentForm(fileName);
+                form.MdiParent = this;
+                form.Show();
             }
-
-            fileName = dialog.FileName;
-            Text = "DevPad - " + fileName;
-
-            return false;
         }
 
-        void InsertSpacesForTab()
+        void CloseForm()
         {
-            var startOfLine = richTextBox.GetFirstCharIndexOfCurrentLine();
-            var caret = richTextBox.SelectionStart;
-
-            const int spacesPerTabStop = 4;
-            var charactersPastPreviousTabStop = (caret - startOfLine) % spacesPerTabStop;
-            var spacesToNextTabStop = new String(Enumerable.Range(0, spacesPerTabStop - charactersPastPreviousTabStop).Select(i => ' ').ToArray());
-
-            richTextBox.SelectedText = spacesToNextTabStop;
+            ((DocumentForm)ActiveMdiChild).Close();
         }
 
-        void IndentNewLine()
+        void Save()
         {
-            var lineNumberOfPreviousLine = richTextBox.GetLineFromCharIndex(richTextBox.GetFirstCharIndexOfCurrentLine()) - 1;
-            var previousLineText = richTextBox.Lines[lineNumberOfPreviousLine];
+            ((DocumentForm)ActiveMdiChild).Save();
+        }
 
-            var leadingSpaces = new String(previousLineText.TakeWhile(c => c == ' ').ToArray());
-
-            if (previousLineText == leadingSpaces)
-            {
-                var caret = richTextBox.SelectionStart;
-
-                richTextBox.SelectionStart = richTextBox.GetFirstCharIndexFromLine(lineNumberOfPreviousLine);
-                richTextBox.SelectionLength = previousLineText.Length;
-                richTextBox.SelectedText = String.Empty;
-
-                richTextBox.SelectionStart = caret - previousLineText.Length;
-            }
-
-            richTextBox.SelectedText = leadingSpaces;
+        void Exit()
+        {
+            Close();
         }
     }
 }

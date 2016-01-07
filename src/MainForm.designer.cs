@@ -5,36 +5,46 @@ namespace DevPad
 
     partial class MainForm
     {
-        RichTextBox richTextBox;
         MenuStrip menuStrip;
-        ToolStripMenuItem saveToolStripMenuItem;
-        ToolStripMenuItem openToolStripMenuItem;
+        ToolStripMenuItem fileToolStripMenuItem;
         ToolStripMenuItem newToolStripMenuItem;
+        ToolStripMenuItem openToolStripMenuItem;
+        ToolStripMenuItem closeToolStripMenuItem;
+        ToolStripMenuItem saveToolStripMenuItem;
+        ToolStripMenuItem exitToolStripMenuItem;
 
         void InitializeComponents()
         {
-            richTextBox = new RichTextBox();
-            menuStrip = new MenuStrip { Visible = false };
-            saveToolStripMenuItem = new ToolStripMenuItem { Visible = false };
-            openToolStripMenuItem = new ToolStripMenuItem { Visible = false };
-            newToolStripMenuItem = new ToolStripMenuItem { Visible = false };
+            menuStrip = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem("&File");
+            newToolStripMenuItem = new ToolStripMenuItem("&New");
+            openToolStripMenuItem = new ToolStripMenuItem("&Open");
+            closeToolStripMenuItem = new ToolStripMenuItem("&Close");
+            saveToolStripMenuItem = new ToolStripMenuItem("&Save");
+            exitToolStripMenuItem = new ToolStripMenuItem("E&xit");
 
             menuStrip.SuspendLayout();
             SuspendLayout();
 
-            richTextBox.AcceptsTab = true;
-            richTextBox.Dock = DockStyle.Fill;
-            richTextBox.Font = new Font("Consolas", 10, FontStyle.Regular, GraphicsUnit.Point, 0);
+            menuStrip.Items.Add(fileToolStripMenuItem);
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[]
+            {
+                newToolStripMenuItem,
+                openToolStripMenuItem,
+                new ToolStripSeparator(),
+                closeToolStripMenuItem,
+                new ToolStripSeparator(),
+                saveToolStripMenuItem,
+                new ToolStripSeparator(),
+                exitToolStripMenuItem,
+            });
 
-            menuStrip.Items.Add(saveToolStripMenuItem);
-            menuStrip.Items.Add(openToolStripMenuItem);
-            menuStrip.Items.Add(newToolStripMenuItem);
-
-            saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
-            openToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
             newToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.N;
+            openToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
+            closeToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.W;
+            saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
+            exitToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.F4;
 
-            Controls.Add(richTextBox);
             Controls.Add(menuStrip);
 
             Size = new Size(800, 600);
@@ -46,6 +56,8 @@ namespace DevPad
 
             ResumeLayout(false);
             PerformLayout();
+
+            MainMenuStrip = menuStrip;
         }
     }
 }
