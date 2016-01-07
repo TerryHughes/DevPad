@@ -6,7 +6,6 @@ namespace DevPad
     partial class MainForm
     {
         MenuStrip menuStrip;
-        ToolStripMenuItem fileToolStripMenuItem;
         ToolStripMenuItem newToolStripMenuItem;
         ToolStripMenuItem openToolStripMenuItem;
         ToolStripMenuItem closeToolStripMenuItem;
@@ -16,7 +15,7 @@ namespace DevPad
         void InitializeComponents()
         {
             menuStrip = new MenuStrip();
-            fileToolStripMenuItem = new ToolStripMenuItem("&File");
+            var fileToolStripMenuItem = new ToolStripMenuItem("&File");
             newToolStripMenuItem = new ToolStripMenuItem("&New");
             openToolStripMenuItem = new ToolStripMenuItem("&Open");
             closeToolStripMenuItem = new ToolStripMenuItem("&Close");
@@ -44,6 +43,16 @@ namespace DevPad
             closeToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.W;
             saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
             exitToolStripMenuItem.ShortcutKeys = Keys.Alt | Keys.F4;
+
+            var windowToolStripMenuItem = new ToolStripMenuItem("&Window");
+            menuStrip.Items.Add(windowToolStripMenuItem);
+            windowToolStripMenuItem.DropDownItems.AddRange(new[]
+            {
+                new ToolStripMenuItem("Arrange Icons", null, (s, e) => LayoutMdi(MdiLayout.ArrangeIcons)),
+                new ToolStripMenuItem("Cascade", null, (s, e) => LayoutMdi(MdiLayout.Cascade)),
+                new ToolStripMenuItem("Tile Horizontal", null, (s, e) => LayoutMdi(MdiLayout.TileHorizontal)),
+                new ToolStripMenuItem("Tile Vertical", null, (s, e) => LayoutMdi(MdiLayout.TileVertical)),
+            });
 
             Controls.Add(menuStrip);
 
