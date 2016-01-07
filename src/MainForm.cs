@@ -23,12 +23,31 @@ namespace DevPad
 
         internal MainForm(string[] fileNames) : this()
         {
+            if (fileNames.Length == 1 && Directory.Exists(fileNames[0]))
+            {
+                var currentDirectory = fileNames[0];
+                var binDirectory = Path.Combine(currentDirectory, "bin");
+                var objDirectory = Path.Combine(currentDirectory, "obj");
+                var oneHourAgoUtc = DateTime.UtcNow.AddHours(-1);
+
+                fileNames = Directory.EnumerateFiles(currentDirectory, "*", SearchOption.AllDirectories)
+                                     .Where(f => !f.StartsWith(binDirectory) && !f.StartsWith(objDirectory))
+                                     .Where(f => new FileInfo(f).LastWriteTimeUtc > oneHourAgoUtc)
+                                     .ToArray()
+                    ;
+            }
+
             foreach (var fileName in fileNames)
             {
                 var form = new DocumentForm(fileName);
                 form.MdiParent = this;
                 form.Show();
             }
+
+            /*
+            if (fileNames.Length > 1)
+                LayoutMdi(MdiLayout.Cascade);
+            */
         }
 
         void New()
