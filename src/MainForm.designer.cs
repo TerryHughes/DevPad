@@ -5,36 +5,32 @@ namespace DevPad
 
     partial class MainForm
     {
-        RichTextBox richTextBox;
         ToolStripMenuItem saveToolStripMenuItem;
+        ToolStripMenuItem closeToolStripMenuItem;
         ToolStripMenuItem openToolStripMenuItem;
         ToolStripMenuItem newToolStripMenuItem;
 
         void InitializeComponents()
         {
-            richTextBox = new RichTextBox();
-
-            var menuStrip = new MenuStrip { Visible = false };
+            var menuStrip = new MenuStrip();
             saveToolStripMenuItem = new ToolStripMenuItem { Visible = false };
+            closeToolStripMenuItem = new ToolStripMenuItem { Visible = false };
             openToolStripMenuItem = new ToolStripMenuItem { Visible = false };
             newToolStripMenuItem = new ToolStripMenuItem { Visible = false };
 
             menuStrip.SuspendLayout();
             SuspendLayout();
 
-            richTextBox.AcceptsTab = true;
-            richTextBox.Dock = DockStyle.Fill;
-            richTextBox.Font = new Font("Consolas", 10, FontStyle.Regular, GraphicsUnit.Point, 0);
-
             menuStrip.Items.Add(saveToolStripMenuItem);
+            menuStrip.Items.Add(closeToolStripMenuItem);
             menuStrip.Items.Add(openToolStripMenuItem);
             menuStrip.Items.Add(newToolStripMenuItem);
 
             saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
+            closeToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.W;
             openToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
             newToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.N;
 
-            Controls.Add(richTextBox);
             Controls.Add(menuStrip);
 
             Size = new Size(800, 600);
@@ -46,6 +42,8 @@ namespace DevPad
 
             ResumeLayout(false);
             PerformLayout();
+
+            MainMenuStrip = menuStrip;
         }
     }
 }
