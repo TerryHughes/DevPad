@@ -16,7 +16,7 @@ namespace DevPad
             InitializeComponents();
 
             unsavedChanges = new UnsavedChanges(this, Save);
-            fileName = String.Empty;
+            fileName = string.Empty;
 
             FormClosing += (s, e) =>
             {
@@ -30,7 +30,7 @@ namespace DevPad
             {
                 var indicator = " *";
 
-                if ((fileName != String.Empty) && !Text.EndsWith(fileName + indicator))
+                if ((fileName != string.Empty) && !Text.EndsWith(fileName + indicator))
                 {
                     Text += indicator;
                 }
@@ -70,7 +70,7 @@ namespace DevPad
 
         void Save()
         {
-            if ((fileName == String.Empty) && DialogCancelled(new SaveFileDialog()))
+            if ((fileName == string.Empty) && DialogCancelled(new SaveFileDialog()))
             {
                 return;
             }
@@ -103,7 +103,7 @@ namespace DevPad
                 return;
             }
 
-            fileName = richTextBox.Text = String.Empty;
+            fileName = richTextBox.Text = string.Empty;
             Text = "DevPad";
 
             unsavedChanges.Reset();
@@ -129,7 +129,7 @@ namespace DevPad
 
             const int spacesPerTabStop = 4;
             var charactersPastPreviousTabStop = (caret - startOfLine) % spacesPerTabStop;
-            var spacesToNextTabStop = new String(Enumerable.Range(0, spacesPerTabStop - charactersPastPreviousTabStop).Select(i => ' ').ToArray());
+            var spacesToNextTabStop = new string(Enumerable.Range(0, spacesPerTabStop - charactersPastPreviousTabStop).Select(i => ' ').ToArray());
 
             richTextBox.SelectedText = spacesToNextTabStop;
         }
@@ -139,7 +139,7 @@ namespace DevPad
             var lineNumberOfPreviousLine = richTextBox.GetLineFromCharIndex(richTextBox.GetFirstCharIndexOfCurrentLine()) - 1;
             var previousLineText = richTextBox.Lines[lineNumberOfPreviousLine];
 
-            var leadingSpaces = new String(previousLineText.TakeWhile(c => c == ' ').ToArray());
+            var leadingSpaces = new string(previousLineText.TakeWhile(c => c == ' ').ToArray());
 
             if (previousLineText == leadingSpaces)
             {
@@ -147,7 +147,7 @@ namespace DevPad
 
                 richTextBox.SelectionStart = richTextBox.GetFirstCharIndexFromLine(lineNumberOfPreviousLine);
                 richTextBox.SelectionLength = previousLineText.Length;
-                richTextBox.SelectedText = String.Empty;
+                richTextBox.SelectedText = string.Empty;
 
                 richTextBox.SelectionStart = caret - previousLineText.Length;
             }
