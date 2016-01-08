@@ -37,6 +37,7 @@ namespace DevPad
 
                 unsavedChanges.HaveOccurred();
             };
+
             richTextBox.KeyPress += (s, e) =>
             {
                 if ((Keys)e.KeyChar == Keys.Tab)
