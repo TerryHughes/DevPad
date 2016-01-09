@@ -21,16 +21,19 @@ namespace DevPad
                         Path.Combine(args[0], "obj"),
                     };
 
-                    var lastWrittenFile = Directory.EnumerateFiles(args[0], "*", SearchOption.AllDirectories)
-                                                   .Where(f => pathsToNotScan.All(p => !f.StartsWith(p)))
-                                                   .OrderByDescending(f => new FileInfo(f).LastWriteTimeUtc)
-                                                   .First()
+                    var oneHourAgoInUtc = DateTime.UtcNow.AddHours(-1);
+                    var recentlyWrittenThresholdInUtc = oneHourAgoInUtc;
+                    var recentlyWrittenFiles = Directory.EnumerateFiles(args[0], "*", SearchOption.AllDirectories)
+                                                        .Where(f => pathsToNotScan.All(p => !f.StartsWith(p)))
+                                                        .Where(f => new FileInfo(f).LastWriteTimeUtc > recentlyWrittenThresholdInUtc)
+                                                        .OrderByDescending(f => new FileInfo(f).LastWriteTimeUtc)
+                                                        .ToArray()
                         ;
-                    Application.Run(new MainForm(lastWrittenFile));
+                    Application.Run(new MainForm(recentlyWrittenFiles));
                 }
                 else
                 {
-                    Application.Run(new MainForm(args[0]));
+                    Application.Run(new MainForm(args));
                 }
             }
             else
