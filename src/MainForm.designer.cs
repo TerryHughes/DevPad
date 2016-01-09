@@ -6,7 +6,6 @@ namespace DevPad
     partial class MainForm
     {
         RichTextBox richTextBox;
-        MenuStrip menuStrip;
         ToolStripMenuItem saveToolStripMenuItem;
         ToolStripMenuItem openToolStripMenuItem;
         ToolStripMenuItem newToolStripMenuItem;
@@ -14,7 +13,8 @@ namespace DevPad
         void InitializeComponents()
         {
             richTextBox = new RichTextBox();
-            menuStrip = new MenuStrip { Visible = false };
+
+            var menuStrip = new MenuStrip { Visible = false };
             saveToolStripMenuItem = new ToolStripMenuItem { Visible = false };
             openToolStripMenuItem = new ToolStripMenuItem { Visible = false };
             newToolStripMenuItem = new ToolStripMenuItem { Visible = false };
